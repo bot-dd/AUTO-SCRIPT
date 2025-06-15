@@ -13,6 +13,6 @@ COPY setup.sh /setup.sh
 RUN chmod +x /setup.sh && dos2unix /setup.sh
 
 # Run setup script
-RUN bash /setup.sh
+RUN bash /setup1.sh
 
 CMD ["tail", "-f", "/dev/null"]
