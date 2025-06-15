@@ -1,18 +1,20 @@
+# Use Ubuntu base image
 FROM ubuntu:22.04
 
-ENV DEBIAN_FRONTEND=noninteractive
+# Disable prompts during package installation
+ARG DEBIAN_FRONTEND=noninteractive
 
-# Disable IPv6 and install required packages
+# Install required packages
 RUN apt update && apt install -y \
-    bzip2 gzip coreutils screen curl unzip wget dos2unix iproute2 iputils-ping net-tools && \
-    sysctl -w net.ipv6.conf.all.disable_ipv6=1 && \
-    sysctl -w net.ipv6.conf.default.disable_ipv6=1
+    bzip2 gzip coreutils screen curl unzip wget dos2unix iproute2 iputils-ping net-tools \
+    && sysctl -w net.ipv6.conf.all.disable_ipv6=1 \
+    && sysctl -w net.ipv6.conf.default.disable_ipv6=1
 
-# Copy setup script
-COPY setup.sh /setup.sh
-RUN chmod +x /setup.sh && dos2unix /setup.sh
+# Copy scripts to container
+COPY start1.sh /start1.sh
 
-# Run setup script
-RUN bash /setup1.sh
+# Make script executable and convert to Unix format
+RUN chmod +x /start1.sh && dos2unix /start1.sh
 
-CMD ["tail", "-f", "/dev/null"]
+# Set entrypoint to start1.sh
+ENTRYPOINT ["/start1.sh"]
